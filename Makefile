@@ -8,15 +8,8 @@ TOOLCHAIN_PREFIX := riscv-none-elf
 
 
 APP_C_SRCS += \
-  ./app/hidkbd.c \
-  ./app/hidkbd_main.c
+  ./src/main.c
 
-PROFILE_C_SRCS := \
-  ./profile/battservice.c \
-  ./profile/devinfoservice.c \
-  ./profile/hiddev.c \
-  ./profile/hidkbdservice.c \
-  ./profile/scanparamservice.c
 
 SDK_BLE_HAL_C_SRCS := \
   ./sdk/BLE/HAL/MCU.c \
@@ -44,7 +37,6 @@ SDK_STARTUP_S_UPPER_SRCS += \
 
 C_SRCS := \
   $(APP_C_SRCS) \
-  $(PROFILE_C_SRCS) \
   $(SDK_BLE_HAL_C_SRCS) \
   $(SDK_STDPERIPHDRIVER_C_SRCS) \
   $(SDK_RVMSIS_C_SRCS)
@@ -65,9 +57,9 @@ STDPERIPHDRIVER_LIBS := -L"./sdk/StdPeriphDriver" -lISP592
 BLE_LIB_LIBS := -L"./sdk/BLE/LIB" -lCH59xBLE
 LIBS := $(STDPERIPHDRIVER_LIBS) $(BLE_LIB_LIBS)
 
-SECONDARY_FLASH := hid_keyboard.hex
-SECONDARY_LIST := hid_keyboard.lst
-SECONDARY_SIZE := hid_keyboard.siz
+SECONDARY_FLASH := main.hex
+SECONDARY_LIST := main.lst
+SECONDARY_SIZE := main.siz
 
 # ARCH is rv32imac on older gcc, rv32imac_zicsr on newer gcc
 # ARCH := rv32imac
@@ -83,11 +75,11 @@ CFLAGS_COMMON := \
   -fmessage-length=0 \
   -fsigned-char \
   -ffunction-sections \
-  -fdata-sections  \
-  -g
+  -fdata-sections
+  #-g
 
 .PHONY: all
-all: hid_keyboard.elf secondary-outputs
+all: main.elf secondary-outputs
 
 .PHONY: clean
 clean:
@@ -95,13 +87,14 @@ clean:
 	-rm $(MAKEFILE_DEPS)
 	-rm $(SECONDARY_FLASH)
 	-rm $(SECONDARY_LIST)
-	-rm hid_keyboard.elf
-	-rm hid_keyboard.map
+	-rm main.elf
+	-rm main.map
+	-rm -r ./obj
 
 .PHONY: secondary-outputs
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
 
-hid_keyboard.elf: $(OBJS)
+main.elf: $(OBJS)
 	${TOOLCHAIN_PREFIX}-gcc \
 	    $(CFLAGS_COMMON) \
 	    -T "sdk/Ld/Link.ld" \
@@ -110,11 +103,11 @@ hid_keyboard.elf: $(OBJS)
 	    --gc-sections \
 	    -Xlinker \
 	    --print-memory-usage \
-	    -Wl,-Map,"hid_keyboard.map" \
+	    -Wl,-Map,"main.map" \
 	    -Lobj \
 	    --specs=nano.specs \
 	    --specs=nosys.specs \
-	    -o "hid_keyboard.elf" \
+	    -o "main.elf" \
 	    $(OBJS) \
 	    $(LIBS)
 
@@ -137,8 +130,7 @@ obj/%.o: ./%.c
 	@ ${TOOLCHAIN_PREFIX}-gcc \
 	    $(CFLAGS_COMMON) \
 	    -DDEBUG=1 \
-	    -I"profile/include" \
-	    -I"app/include" \
+	    -I"src/include" \
 	    -I"sdk/StdPeriphDriver/inc" \
 	    -I"sdk/RVMSIS" \
 	    -I"sdk/BLE/LIB" \
@@ -162,3 +154,6 @@ obj/%.o: ./%.S
 	    -MT"$(@)" \
 	    -c \
 	    -o "$@" "$<"
+
+f: clean all  
+	wchisp flash ./main.elf
