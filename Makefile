@@ -16,6 +16,7 @@ SDK_BLE_HAL_C_SRCS := \
   ./sdk/BLE/HAL/RTC.c \
   ./sdk/BLE/HAL/SLEEP.c
 
+
 SDK_STDPERIPHDRIVER_C_SRCS += \
   ./sdk/StdPeriphDriver/CH59x_adc.c \
   ./sdk/StdPeriphDriver/CH59x_clk.c \
@@ -23,9 +24,21 @@ SDK_STDPERIPHDRIVER_C_SRCS += \
   ./sdk/StdPeriphDriver/CH59x_gpio.c \
   ./sdk/StdPeriphDriver/CH59x_i2c.c \
   ./sdk/StdPeriphDriver/CH59x_lcd.c \
+  ./sdk/StdPeriphDriver/CH59x_pwm.c \
   ./sdk/StdPeriphDriver/CH59x_pwr.c \
+  ./sdk/StdPeriphDriver/CH59x_spi0.c \
   ./sdk/StdPeriphDriver/CH59x_sys.c \
-  ./sdk/StdPeriphDriver/CH59x_uart1.c
+  ./sdk/StdPeriphDriver/CH59x_timer0.c \
+  ./sdk/StdPeriphDriver/CH59x_timer1.c \
+  ./sdk/StdPeriphDriver/CH59x_timer2.c \
+  ./sdk/StdPeriphDriver/CH59x_timer3.c \
+  ./sdk/StdPeriphDriver/CH59x_uart0.c \
+  ./sdk/StdPeriphDriver/CH59x_uart1.c \
+  ./sdk/StdPeriphDriver/CH59x_uart2.c \
+  ./sdk/StdPeriphDriver/CH59x_uart3.c \
+  ./sdk/StdPeriphDriver/CH59x_usbdev.c \
+  ./sdk/StdPeriphDriver/CH59x_usbhostBase.c \
+  ./sdk/StdPeriphDriver/CH59x_usbhestClass.c
 
 SDK_RVMSIS_C_SRCS += \
   ./sdk/RVMSIS/core_riscv.c
