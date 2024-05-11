@@ -38,7 +38,7 @@ SDK_STDPERIPHDRIVER_C_SRCS += \
   ./sdk/StdPeriphDriver/CH59x_uart3.c \
   ./sdk/StdPeriphDriver/CH59x_usbdev.c \
   ./sdk/StdPeriphDriver/CH59x_usbhostBase.c \
-  ./sdk/StdPeriphDriver/CH59x_usbhestClass.c
+  ./sdk/StdPeriphDriver/CH59x_usbhostClass.c
 
 SDK_RVMSIS_C_SRCS += \
   ./sdk/RVMSIS/core_riscv.c
