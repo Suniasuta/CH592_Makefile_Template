@@ -157,3 +157,6 @@ obj/%.o: ./%.S
 
 f: clean all  
 	wchisp flash ./main.elf
+
+flash: 
+	wchisp flash ./main.elf
